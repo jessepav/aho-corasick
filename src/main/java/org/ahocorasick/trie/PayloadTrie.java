@@ -73,7 +73,7 @@ public class PayloadTrie<T> {
             keyword = keyword.toLowerCase();
         }
 
-        addState(keyword).addEmit(new Payload<>(keyword, null));
+        addState(keyword).addEmit(new Payload<T>(keyword, null));
     }
 
     private PayloadState<T> addState(final String keyword) {
@@ -126,7 +126,7 @@ public class PayloadTrie<T> {
      * @return A collection of emits.
      */
     public Collection<PayloadEmit<T>> parseText(final CharSequence text) {
-        return parseText(text, new DefaultPayloadEmitHandler<>());
+        return parseText(text, new DefaultPayloadEmitHandler<T>());
     }
 
     /**
@@ -251,8 +251,11 @@ public class PayloadTrie<T> {
 
     private void removePartialMatches(final CharSequence searchText, final List<PayloadEmit<T>> collectedEmits) {
 
-        final RemoveElementPredicate<PayloadEmit<T>> predicate = emit -> isPartialMatch( searchText, emit);
-
+        final RemoveElementPredicate<PayloadEmit<T>> predicate = new RemoveElementPredicate<PayloadEmit<T>>() {
+            public boolean remove(PayloadEmit<T> emit) {
+                return isPartialMatch(searchText, emit);
+            }
+        };
         ListElementRemoval.removeIf(collectedEmits, predicate);
     }
 
