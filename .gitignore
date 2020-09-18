@@ -6,3 +6,5 @@ src/main/java/Main.java
 *.txt
 docs
 /build
+/dist
+build.properties

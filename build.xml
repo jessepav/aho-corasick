@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="aho-corasick" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="256m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.apk"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.ane"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module aho-corasick -->
+  
+  <dirname property="module.aho-corasick.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.aho-corasick" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="aho-corasick.output.dir" value="${module.aho-corasick.basedir}/build/classes/aho-corasick"/>
+  <property name="aho-corasick.testoutput.dir" value="${module.aho-corasick.basedir}/build/test/aho-corasick"/>
+  
+  <path id="aho-corasick.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="aho-corasick.module.production.classpath"/>
+  
+  <path id="aho-corasick.runtime.production.module.classpath">
+    <pathelement location="${aho-corasick.output.dir}"/>
+  </path>
+  
+  <path id="aho-corasick.module.classpath">
+    <pathelement location="${aho-corasick.output.dir}"/>
+  </path>
+  
+  <path id="aho-corasick.runtime.module.classpath">
+    <pathelement location="${aho-corasick.testoutput.dir}"/>
+    <pathelement location="${aho-corasick.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.aho-corasick">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.aho-corasick">
+    <patternset refid="excluded.from.module.aho-corasick"/>
+  </patternset>
+  
+  <path id="aho-corasick.module.sourcepath">
+    <dirset dir="${module.aho-corasick.basedir}">
+      <include name="src/main/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.aho-corasick" depends="compile.module.aho-corasick.production,compile.module.aho-corasick.tests" description="Compile module aho-corasick"/>
+  
+  <target name="compile.module.aho-corasick.production" description="Compile module aho-corasick; production classes">
+    <mkdir dir="${aho-corasick.output.dir}"/>
+    <javac destdir="${aho-corasick.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.aho-corasick}"/>
+      <bootclasspath refid="aho-corasick.module.bootclasspath"/>
+      <classpath refid="aho-corasick.module.production.classpath"/>
+      <src refid="aho-corasick.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.aho-corasick"/>
+    </javac>
+    
+    <copy todir="${aho-corasick.output.dir}">
+      <fileset dir="${module.aho-corasick.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.aho-corasick.tests" depends="compile.module.aho-corasick.production" description="compile module aho-corasick; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.aho-corasick" description="cleanup module">
+    <delete dir="${aho-corasick.output.dir}"/>
+    <delete dir="${aho-corasick.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.aho-corasick" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.aho-corasick" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
