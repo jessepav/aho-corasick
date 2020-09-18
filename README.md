@@ -1,4 +1,5 @@
-A fork of https://github.com/robert-bor/aho-corasick to keep Java 7 compatibility.
+A fork of https://github.com/robert-bor/aho-corasick to keep Java 7 compatibility,
+and to add a simple `FastMultiReplace` class.
 
 Aho-Corasick
 ============
