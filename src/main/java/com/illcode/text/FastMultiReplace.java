@@ -4,8 +4,12 @@ import org.ahocorasick.trie.*;
 
 import static org.ahocorasick.trie.Trie.TrieBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Map;
+import java.util.TreeMap;
 
 /* See https://stackoverflow.com/a/40836618/84923*/
 
@@ -65,5 +69,24 @@ public class FastMultiReplace
         }
         sb.append(text.substring(prevIndex));
         return sb.toString();
+    }
+
+    public static void main(String[] args) throws IOException {
+        final String helpText = "Usage: FastMultiReplace <input file> <search-term> <replacement> [...]";
+
+        if (args.length < 3)
+            System.out.println(helpText);
+        else if (args.length % 2 == 0)
+            System.out.println(helpText);
+        else {
+            String text = new String(Files.readAllBytes(Paths.get(args[0])));
+            Map<String,String> replacements = new TreeMap<>();
+            for (int i = 1; i < args.length; i += 2)
+                replacements.put(args[i], args[i+1]);
+            FastMultiReplace fmr = new FastMultiReplace();
+            fmr.initTrie(replacements, true, false, false);
+            System.out.print(fmr.replace(text));
+        }
+
     }
 }
